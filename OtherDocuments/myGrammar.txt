@@ -19,40 +19,44 @@ ItemElement:
 
 
 Blog:
-	'blog {' (Title)(',' date=Date)? (',' tag=Tags)? '}';
+	'blog {' declaration=ElementDeclaration '}';
 	
 Article:
-	'article {' (Title) (','date=Date)? (','tag=Tags) '}';
+	'articles {' declaration=ElementDeclaration '}';
+
+ElementDeclaration:
+	(Title)(',' date=Date)? (',' tag=Tags)?
+;
 
 TagImport:
-	'tag ' Tag;
+	'tag 'Tag;
 
 Tag:
 	name=ID;
 	
-//SubItemElement:
-//	Title | Date | Tags;
-
 Title:
-	'title=' name=ID;
+	'title=' name=TitleID;
 	
 Date:
-	'date=' name=ID;
+	'date=' name=BLOGDATE;
 
 Tags:
 	'tags=['(name=[Tag])(',' name=[Tag])* ']';
 
 	
-//Parser: ','* vals+=ID (','+ vals+=ID)* ','*
-//Above was an example
 
-/*terminal ALPHANUMERICDASH:
-	(
-		('0'..'9' | 'A'..'Z' | 'a'..'z')+ 
-		(
-			('-')('0'..'9' | 'A'..'Z' | 'a'..'z')+
-		)*
-	);*/
+TitleID:
+	titleid+=(ALPHANUMERIC)+
+;
+
+/*terminal ALPHANUMERICDASH:	
+		('-')ALPHANUMERIC+;
+		
+terminal ALPHANUMBERICNODASH:
+	ALPHANUMERIC; */
 	
-//terminal BLOGDATE:
-	//('0'..'9')('0'..'9')('0'..'9')('0'..'9')('-')('0'..'9')('0'..'9')('-')('0'..'9')('0'..'9');
+terminal ALPHANUMERIC:
+		('0'..'9' | 'A'..'Z' | 'a'..'z')+('-')('0'..'9' | 'A'..'Z' | 'a'..'z')+;
+	
+terminal BLOGDATE:
+	('0'..'9')('0'..'9')('0'..'9')('0'..'9')('-')('0'..'9')('0'..'9')('-')('0'..'9')('0'..'9');
